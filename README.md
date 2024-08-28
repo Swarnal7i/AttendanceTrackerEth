@@ -19,7 +19,7 @@ Once you are on the Remix website, create a new file by clicking on the "+" icon
 solidity
 
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.18;
+pragma solidity 0.8.22;
 
 // Creating a simple contract of AttendanceTracker that keeps track when a student is marked present or absent
 contract AttendanceTracker {
@@ -39,6 +39,9 @@ contract AttendanceTracker {
         // Only the teacher can mark attendance
         require(msg.sender == teacher, "Only the teacher can mark attendance");
 
+        // check is student already marked present
+        assert(attendance[_student]!=true);
+
         // Mark the student as present
         attendance[_student] = true;
 
@@ -48,18 +51,19 @@ contract AttendanceTracker {
             emit StudentAdded(_student); // Emit event when a student is added
         }
 
+
+        
+
         // Emit event when attendance is marked
         emit AttendanceMarked(_student, true);
-
-        // Assert that the student is now marked as present
-        assert(attendance[_student] == true);
+        
     }
 
     function unmarkAttendance(address _student) public {
-        // Only the teacher can unmark attendance
+        // Only the teacher canmarkAttendance(an unmark attendance
         require(msg.sender == teacher, "Only the teacher can unmark attendance");
 
-        // Check if the student is already marked as present and if not reverts with the following error message 
+        // Check if the student is already marked as present and if not reverts with the following message 
         if (!attendance[_student]) {
             revert("Student is not marked as present");
         }
